@@ -8,6 +8,7 @@ and async processing for optimal performance.
 import asyncio
 import base64
 import csv
+import html
 import json
 import logging
 import os
@@ -16,18 +17,23 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import aiohttp
-import openai
-import requests
+
+from bs4 import BeautifulSoup
+
 from dotenv import load_dotenv
+
+import openai
+
+import requests
+
 from tenacity import (
     retry,
     retry_if_exception_type,
     stop_after_attempt,
     wait_exponential,
 )
-import html
+
 from tqdm import tqdm
-from bs4 import BeautifulSoup
 
 # Load environment variables
 load_dotenv()
@@ -236,6 +242,7 @@ async def generate_review(
 
     return response.choices[0].message.content
 
+
 @retry(
     retry=retry_if_exception_type(aiohttp.ClientError),
     wait=wait_exponential(multiplier=1, min=4, max=60),
@@ -266,6 +273,7 @@ async def post_to_wordpress(title: str, content: str) -> Tuple[int, Dict]:
             raise_for_status=True
         )
         return response.status, await response.json()
+
 
 async def process_product(product: Dict) -> Optional[Dict]:
     """Process a single product review generation and posting."""

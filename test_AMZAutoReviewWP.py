@@ -4,9 +4,8 @@ This module contains unit tests for the Amazon product review generator
 and WordPress publisher functionality.
 """
 
-import pytest
 from datetime import datetime, timedelta
-from unittest.mock import patch, AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from AMZAutoReviewWP import (
     RateLimiter,
@@ -16,11 +15,13 @@ from AMZAutoReviewWP import (
     post_to_wordpress,
 )
 
+import pytest
+
 
 @pytest.fixture
 def rate_limiter():
     """Create a RateLimiter instance for testing.
-    
+
     Returns:
         RateLimiter: A configured rate limiter for testing.
     """
@@ -30,10 +31,10 @@ def rate_limiter():
 @pytest.fixture
 def temp_cache_file(tmp_path):
     """Create a temporary cache file for testing.
-    
+
     Args:
         tmp_path: Pytest fixture providing temporary directory.
-        
+
     Returns:
         Path: Path to temporary cache file.
     """
@@ -44,10 +45,10 @@ def temp_cache_file(tmp_path):
 @pytest.fixture
 def review_cache(temp_cache_file):
     """Create a ReviewCache instance for testing.
-    
+
     Args:
         temp_cache_file: Path to temporary cache file.
-        
+
     Returns:
         ReviewCache: Configured review cache for testing.
     """
@@ -57,7 +58,7 @@ def review_cache(temp_cache_file):
 @pytest.mark.asyncio
 async def test_rate_limiter(rate_limiter):
     """Test rate limiter functionality.
-    
+
     Verifies that rate limiting properly delays requests when limit is reached.
     """
     start_time = datetime.now()
@@ -70,18 +71,15 @@ async def test_rate_limiter(rate_limiter):
 
 def test_review_cache(review_cache):
     """Test review cache functionality.
-    
+
     Verifies cache set/get operations and expiration behavior.
     """
     test_key = "test_product"
     test_data = {"content": "Test review"}
-    
-    # Test cache set and get
     review_cache.set(test_key, test_data)
     cached = review_cache.get(test_key)
     assert cached == test_data
     
-    # Test cache expiration
     expired_key = "expired_product"
     review_cache.cache[expired_key] = {
         "timestamp": (datetime.now() - timedelta(hours=25)).isoformat(),
@@ -93,15 +91,13 @@ def test_review_cache(review_cache):
 @pytest.mark.asyncio
 async def test_generate_review():
     """Test the generate_review function.
-    
+
     Verifies review generation with sample product data and output format.
     """
-    # Mock OpenAI response with simplified structure
     mock_response = MagicMock()
     mock_response.choices = [MagicMock()]
     mock_response.choices[0].message.content = "Test generated review content"
 
-    # Create mock AsyncOpenAI client
     mock_client = AsyncMock()
     mock_client.chat.completions.create = AsyncMock(return_value=mock_response)
 
@@ -113,11 +109,8 @@ async def test_generate_review():
             "Competitor",
             "B00COMP123"
         )
-        
         assert isinstance(review, str)
         assert review == "Test generated review content"
-        
-        # Verify the API was called with correct parameters
         mock_client.chat.completions.create.assert_called_once()
         call_args = mock_client.chat.completions.create.call_args[1]
         assert call_args['model'] == 'gpt-4'
@@ -128,10 +121,9 @@ async def test_generate_review():
 @pytest.mark.asyncio
 async def test_post_to_wordpress():
     """Test the post_to_wordpress function.
-    
+
     Verifies WordPress posting functionality with sample content.
     """
-    # Mock response
     mock_response = AsyncMock()
     mock_response.status = 201
     mock_response.json.return_value = {
@@ -140,7 +132,6 @@ async def test_post_to_wordpress():
         "title": {"rendered": "Test Review"}
     }
 
-    # Mock session
     mock_session = AsyncMock()
     mock_session.post.return_value = mock_response
     mock_session.__aenter__.return_value = mock_session
@@ -148,13 +139,11 @@ async def test_post_to_wordpress():
 
     with patch('aiohttp.ClientSession', return_value=mock_session):
         status, response = await post_to_wordpress("Test Review", "Test Content")
-        
         assert status == 201
         assert isinstance(response, dict)
         assert response["id"] == 123
         assert response["status"] == "publish"
 
-        # Verify the WordPress API call
         mock_session.post.assert_called_once()
         call_args = mock_session.post.call_args
         assert 'headers' in call_args[1]
@@ -165,7 +154,7 @@ async def test_post_to_wordpress():
 
 def test_fetch_product_features():
     """Test the fetch_product_features function.
-    
+
     Verifies Amazon product feature fetching and response format.
     """
     asin = "B00TEST123"
