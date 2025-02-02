@@ -1,0 +1,6 @@
+product_name,asin,competitor_name,competitor_asin,category,image_url,description,price
+Wireless Bluetooth Headphones,B08XYZ1234,Noise Cancelling Headphones,B08ABC5678,Audio,https://example.com/image1.jpg,High-quality wireless headphones with noise cancellation.,99.99
+Smart LED TV,B07ABC5678,4K Ultra HD TV,B07DEF9012,Electronics,https://example.com/image2.jpg,55-inch Smart LED TV with 4K resolution.,499.99
+Fitness Tracker Watch,B09DEF9012,Smart Fitness Band,B08GHI3456,Fitness,https://example.com/image3.jpg,Water-resistant fitness tracker with heart rate monitor.,79.99
+Portable Charger,B08GHI3456,Fast Charging Power Bank,B08JKL7890,Accessories,https://example.com/image4.jpg,Compact portable charger with fast charging capabilities.,29.99
+Electric Toothbrush,B07JKL7890,Smart Electric Toothbrush,B08MNO1234,Health,https://example.com/image5.jpg,Electric toothbrush with smart features and multiple modes.,49.99
