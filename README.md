@@ -73,7 +73,7 @@ Automate product review generation and WordPress publishing with AI. Features re
 ## Usage 🚀
 
 ```bash
-python amazon_review_publisher.py
+python AMZAutoReviewWP.py
 ```
 
 ### Workflow Flowchart
