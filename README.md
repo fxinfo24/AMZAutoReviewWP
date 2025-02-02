@@ -171,6 +171,95 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for deta
 **Disclaimer**: Use responsibly. Ensure compliance with OpenAI's content policies, Amazon API terms, and local regulations. Affiliate links must follow FTC guidelines.
 ```
 
+```markdown
+## Testing 🧪
+
+The test suite verifies core functionality using pytest. Tests include mocked API responses and async operation verification.
+
+### Running Tests
+```bash
+pytest test_AMZAutoReviewWP.py -v
+```
+
+### Test Coverage
+
+```python
+# test_AMZAutoReviewWP.py
+"""
+Test module for Amazon product review generator and WordPress publisher functionality.
+Covers core components with mocked API responses and async operation verification.
+"""
+
+Components Tested:
+- Rate limiting algorithms
+- Cache expiration logic
+- OpenAI review generation
+- WordPress API integration
+- Amazon product data fetching
+```
+
+### Key Test Cases
+
+```mermaid
+graph TD
+    A[RateLimiter] -->|Acquire Tokens| B(Concurrency Control)
+    C[ReviewCache] -->|Set/Get| D(Expiration Validation)
+    E[OpenAI] -->|Generate| F(Content Structure)
+    G[WordPress] -->|Post| H(API Integration)
+    I[Amazon] -->|Fetch| J(Data Parsing)
+```
+
+### Test Types
+
+| Test Category          | Description                              | Example Verification              |
+|------------------------|------------------------------------------|------------------------------------|
+| Rate Limiting          | Concurrent request management            | 2 calls/sec enforcement           |
+| Cache Validation       | Data persistence and TTL enforcement     | 24-hour expiration check          |
+| API Integration        | WordPress/OpenAI response handling       | Mocked success/failure scenarios  |
+| Error Handling         | Exception recovery mechanisms            | Retry logic verification          |
+| Data Formatting        | Content sanitization and structure       | HTML escaping validation          |
+
+### Mocking Strategy
+
+```python
+@patch('openai.AsyncOpenAI')
+@patch('aiohttp.ClientSession')
+async def test_api_calls(mock_openai, mock_session):
+    # Mock API responses for isolated testing
+    mock_openai.return_value.chat.completions.create = AsyncMock()
+    mock_session.return_value.post = AsyncMock()
+    
+    # Verify core functionality without live API calls
+    await generate_review(...)
+    await post_to_wordpress(...)
+```
+
+### Test Configuration
+
+`conftest.py` includes:
+- Temporary cache file fixtures
+- Rate limiter configuration
+- Mock API response templates
+- Async test support
+
+### CI/CD Ready
+
+```yaml
+# Sample GitHub Actions Configuration
+name: Tests
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - run: pytest -v --cov=AMZAutoReviewWP
+```
+
 This README includes:
 1. Badges for quick project status viewing
 2. Visual workflow diagrams

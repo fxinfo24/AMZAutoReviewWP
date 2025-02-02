@@ -1,4 +1,4 @@
-"""Test module for amazon_babu_new_kheil.py.
+"""Test module for AMZAutoReviewWP.py.
 
 This module contains unit tests for the Amazon product review generator
 and WordPress publisher functionality.
