@@ -12,7 +12,7 @@
 
 ### **Instant Setup**
 ```bash
-git clone https://github.com/yourusername/AutoReviewWP.git
+git clone https://github.com/fxinfo24/AMZAutoReviewWP.git
 cd AutoReviewWP && pip install -r requirements.txt
 ```
 **Compatibility**: Windows/macOS/Linux • Python 3.8+ • WordPress 5.0+

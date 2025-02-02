@@ -30,7 +30,7 @@ Automate product review generation and WordPress publishing with AI. Features re
 ### Setup
 1. Clone repository:
    ```bash
-   git clone https://github.com/yourusername/AutoReviewWP.git
+   git clone https://github.com/fxinfo24/AMZAutoReviewWP.git
    cd AutoReviewWP
    ```
 
